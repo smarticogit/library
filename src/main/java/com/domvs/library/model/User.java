@@ -11,13 +11,14 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", columnDefinition = "uuid")
     private UUID id;
 
     @Column(name = "name")
     private String name;
 
+    @OneToMany
     @Column(name = "borrowed_books")
     private List<Book> borrowedBooks;
 }

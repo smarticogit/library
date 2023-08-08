@@ -9,12 +9,13 @@ import java.time.LocalDate;
 @Data
 @Table(name = "books")
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "uuid")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title", unique = true)
+    @Column(name = "title")
     private String title;
 
     @Column(name = "author")
@@ -23,7 +24,7 @@ public class Book {
     @Column(name = "available_quantity")
     private Long availableQuantity;
 
-    @Column(name = "number_of_pages")
+    @Column(name = "number_pages")
     private int numberOfPages;
 
     @Column(name = "availability")
