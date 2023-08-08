@@ -14,11 +14,17 @@ public class UserController {
     private ImplLibrary library;
 
     @PostMapping
-    public ResponseEntity Book (@RequestBody User user) {
+    public ResponseEntity User (@RequestBody User user) {
         try {
-            return ResponseEntity.status(200).body(library.saveUser(user));
+            return ResponseEntity.status(201).body(library.saveUser(user));
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
     }
+
+    @GetMapping
+    public ResponseEntity getAllUsers() {
+        return ResponseEntity.status(200).body(library.getAllUsers());
+    }
+
 }

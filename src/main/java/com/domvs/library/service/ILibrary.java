@@ -3,6 +3,8 @@ package com.domvs.library.service;
 import com.domvs.library.model.Book;
 import com.domvs.library.model.User;
 
+import java.util.UUID;
+
 /*
  * Classe responsavel pelo cadastro de livros e usuarios
  * Emprestimo e devolucao de livros
@@ -33,7 +35,7 @@ public interface ILibrary {
      * Um usuario nao pode emprestar um novo livro se estiver com a data de entrega de um livro atrasada.
      * Deve lancar excessao customizada caso algum pre requisito nao seja atendido
      */
-    void toLoan(User user, Book book);
+    void toLoan(UUID userId, UUID bookId);
 
     /*
      * Realiza a devolucao de um livro
