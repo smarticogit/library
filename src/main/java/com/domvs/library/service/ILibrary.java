@@ -35,11 +35,11 @@ public interface ILibrary {
      * Um usuario nao pode emprestar um novo livro se estiver com a data de entrega de um livro atrasada.
      * Deve lancar excessao customizada caso algum pre requisito nao seja atendido
      */
-    void toLoan(UUID userId, UUID bookId);
+    void toLoan(Long userId, Long bookId);
 
     /*
      * Realiza a devolucao de um livro
      * Um usuario so pode devolver um livro que ele emprestou
      */
-    void giveBack(User user, Book book);
+    void giveBack(Long userId, Long bookId);
 }
