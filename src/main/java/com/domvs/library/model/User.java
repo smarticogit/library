@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -27,4 +26,6 @@ public class User {
     @Column(name = "borrowed_books")
     private List<Book> borrowedBooks;
 
+    public User(long l, String john) {
+    }
 }

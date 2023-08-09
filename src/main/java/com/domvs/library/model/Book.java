@@ -34,4 +34,7 @@ public class Book {
 
     @Column(name = "delivery_date")
     private LocalDate deliveryDate;
+
+    public Book(long l, String sampleBookTitle, User user) {
+    }
 }

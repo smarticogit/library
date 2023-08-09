@@ -2,6 +2,8 @@ package com.domvs.library.service;
 
 import com.domvs.library.model.Book;
 import com.domvs.library.model.User;
+import com.domvs.library.service.exception.BookException;
+import com.domvs.library.service.exception.UserException;
 
 import java.util.UUID;
 
@@ -17,7 +19,7 @@ public interface ILibrary {
      * Nao pode haver duplicacao de titulos, mas uma biblioteca pode ter varios exemplares do mesmo livro
      */
 
-    Book saveBook(Book book);
+    Book saveBook(Book book) throws Exception;
 
 
 
@@ -35,11 +37,11 @@ public interface ILibrary {
      * Um usuario nao pode emprestar um novo livro se estiver com a data de entrega de um livro atrasada.
      * Deve lancar excessao customizada caso algum pre requisito nao seja atendido
      */
-    void toLoan(Long userId, Long bookId);
+    void toLoan(Long userId, Long bookId) throws BookException, UserException;
 
     /*
      * Realiza a devolucao de um livro
      * Um usuario so pode devolver um livro que ele emprestou
      */
-    void giveBack(Long userId, Long bookId);
+    void giveBack(Long userId, Long bookId) throws BookException;
 }
