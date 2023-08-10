@@ -2,10 +2,8 @@ package com.domvs.library.service;
 
 import com.domvs.library.model.Book;
 import com.domvs.library.model.User;
-import com.domvs.library.service.exception.BookException;
-import com.domvs.library.service.exception.UserException;
-
-import java.util.UUID;
+import com.domvs.library.service.exception.BookNotFoundException;
+import com.domvs.library.service.exception.UserNotFountException;
 
 /*
  * Classe responsavel pelo cadastro de livros e usuarios
@@ -37,11 +35,11 @@ public interface ILibrary {
      * Um usuario nao pode emprestar um novo livro se estiver com a data de entrega de um livro atrasada.
      * Deve lancar excessao customizada caso algum pre requisito nao seja atendido
      */
-    void toLoan(Long userId, Long bookId) throws BookException, UserException;
+    void toLoan(Long userId, Long bookId) throws BookNotFoundException, UserNotFountException;
 
     /*
      * Realiza a devolucao de um livro
      * Um usuario so pode devolver um livro que ele emprestou
      */
-    void giveBack(Long userId, Long bookId) throws BookException;
+    void giveBack(Long userId, Long bookId) throws BookNotFoundException;
 }

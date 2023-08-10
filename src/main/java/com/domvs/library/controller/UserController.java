@@ -2,9 +2,8 @@ package com.domvs.library.controller;
 
 import com.domvs.library.model.User;
 import com.domvs.library.service.ImplLibrary;
-import com.domvs.library.service.exception.UserException;
+import com.domvs.library.service.exception.UserNotFountException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,7 @@ public class UserController {
     public ResponseEntity User (@RequestBody User user) {
         try {
             return ResponseEntity.status(201).body(library.saveUser(user));
-        } catch (UserException e) {
+        } catch (UserNotFountException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         }
     }

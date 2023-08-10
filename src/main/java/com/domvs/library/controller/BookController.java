@@ -2,8 +2,8 @@ package com.domvs.library.controller;
 
 import com.domvs.library.model.Book;
 import com.domvs.library.service.ImplLibrary;
-import com.domvs.library.service.exception.BookException;
-import com.domvs.library.service.exception.UserException;
+import com.domvs.library.service.exception.BookNotFoundException;
+import com.domvs.library.service.exception.UserNotFountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,23 +30,27 @@ public class BookController {
     }
 
     @PostMapping("/loan/{userId}/{bookId}")
-    public ResponseEntity loanBook(@PathVariable Long userId, @PathVariable Long bookId) throws UserException, BookException {
-        try {
+    public ResponseEntity loanBook(@PathVariable Long userId, @PathVariable Long bookId) throws UserNotFountException, BookNotFoundException {
+        try{
             library.toLoan(userId, bookId);
-        } catch (UserException | BookException e) {
+            return ResponseEntity.status(200).body("Book loaned");
+        } catch (BookNotFoundException | UserNotFountException e){
             return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
         }
-        return ResponseEntity.status(200).body("Book loaned");
     }
 
     @PostMapping("/giveback/{userId}/{bookId}")
     public ResponseEntity giveBack(@PathVariable Long userId, @PathVariable Long bookId) {
-        try {
+        try{
             library.giveBack(userId, bookId);
-        } catch (Exception e) {
+            return ResponseEntity.status(200).body("Book returned");
+        } catch (BookNotFoundException | UserNotFountException e){
             return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
         }
-        return ResponseEntity.status(200).body("Returned Book");
     }
 
 }

@@ -26,6 +26,4 @@ public class User {
     @Column(name = "borrowed_books")
     private List<Book> borrowedBooks;
 
-    public User(long l, String john) {
-    }
 }

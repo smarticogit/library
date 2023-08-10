@@ -4,8 +4,8 @@ import com.domvs.library.model.Book;
 import com.domvs.library.model.User;
 import com.domvs.library.repository.BookRepository;
 import com.domvs.library.repository.UserRepository;
-import com.domvs.library.service.exception.BookException;
-import com.domvs.library.service.exception.UserException;
+import com.domvs.library.service.exception.BookNotFoundException;
+import com.domvs.library.service.exception.UserNotFountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +22,11 @@ public class ImplLibrary implements ILibrary {
 
 
     @Override
-    public Book saveBook(Book book) throws BookException, UserException {
+    public Book saveBook(Book book) throws BookNotFoundException, UserNotFountException {
         var bookFound = bookRepository.findBookByTitle(book.getTitle());
 
         if (bookFound != null && bookFound.getTitle().equals(book.getTitle())) {
-            throw new BookException("The Book: " + book.getTitle() + " already exists");
+            throw new BookNotFoundException("The Book: " + book.getTitle() + " already exists");
         }
         return bookRepository.save(book);
     }
@@ -37,28 +37,28 @@ public class ImplLibrary implements ILibrary {
     }
 
     @Override
-    public void toLoan(Long userId, Long bookId) throws BookException, UserException {
-        var bookFound = bookRepository.findById(bookId).orElseThrow(() -> new BookException("Book not found"));
-        var userFound = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found"));
+    public void toLoan(Long userId, Long bookId) throws BookNotFoundException, UserNotFountException {
+        var bookFound = bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundException("Book not found"));
+        var userFound = userRepository.findById(userId).orElseThrow(() -> new UserNotFountException("User not found"));
 
         var borrowedBooks = userFound.getBorrowedBooks();
         for (var book : borrowedBooks) {
             if (book.getId().equals(bookId)) {
-                throw new BookException("The Book: " + book.getTitle() + " is already loaned");
+                throw new BookNotFoundException("The Book: " + book.getTitle() + " is already loaned");
             }
         }
 
         if(!bookFound.isAvailability()) {
-            throw new BookException("The Book: " + bookFound.getTitle() + " is not available");
+            throw new BookNotFoundException("The Book: " + bookFound.getTitle() + " is not available");
         }
 
         if(userFound.getBorrowedBooks().size() >= 5) {
-            throw new UserException("Can't loan more than 5 books");
+            throw new UserNotFountException("Can't loan more than 5 books");
         }
 
         for (var book : userFound.getBorrowedBooks()) {
             if (book.getDeliveryDate().isBefore(LocalDate.now().minusDays(6))) {
-                throw new UserException("Has pending returns");
+                throw new UserNotFountException("Has pending returns");
             }
         }
         bookFound.setAvailableQuantity(bookFound.getAvailableQuantity() - 1);
@@ -70,7 +70,7 @@ public class ImplLibrary implements ILibrary {
     }
 
     @Override
-    public void giveBack(Long userId, Long bookId) throws BookException {
+    public void giveBack(Long userId, Long bookId) throws BookNotFoundException {
         var userFound = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         var bookFound = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 
@@ -87,7 +87,7 @@ public class ImplLibrary implements ILibrary {
             }
         }
         if (!bookFoundInList) {
-            throw new BookException("The Book: " + bookFound.getTitle() + " is not loaned");
+            throw new BookNotFoundException("The Book: " + bookFound.getTitle() + " is not loaned");
         }
     }
 

@@ -17,7 +17,7 @@ public class Book {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", unique = true)
     private String title;
 
     @Column(name = "author")
@@ -35,6 +35,4 @@ public class Book {
     @Column(name = "delivery_date")
     private LocalDate deliveryDate;
 
-    public Book(long l, String sampleBookTitle, User user) {
-    }
 }
